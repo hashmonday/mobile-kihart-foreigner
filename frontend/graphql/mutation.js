@@ -43,3 +43,30 @@ export const canclePrintDate = gql`
     }
   }
 `
+
+export const setCollectedDate = gql`
+  mutation setCollectedDate($id: ID!, $specimen_collected: DateTime) {
+    updatePerson(
+      input: {
+        where: { id: $id }
+        data: { specimen_collected: $specimen_collected }
+      }
+    ) {
+      person {
+        id
+      }
+    }
+  }
+`
+
+export const cancleCollectedDate = gql`
+  mutation cancleCollectedDate($id: ID!) {
+    updatePerson(
+      input: { where: { id: $id }, data: { specimen_collected: null } }
+    ) {
+      person {
+        id
+      }
+    }
+  }
+`
