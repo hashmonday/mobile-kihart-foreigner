@@ -24,31 +24,19 @@ export const createPersonMutation = gql`
   }
 `
 
-export const updatePersonMutation = gql`
-  mutation updatePersonMutation(
-    $id: ID!
-    $first_name: String!
-    $last_name: String!
-    $date_of_birth: Date!
-    $address: String!
-    $telephone_number: String!
-    $passport_number: String
-    $node: String
-  ) {
-    updatePerson(
-      input: {
-        where: { id: $id }
-        data: {
-          first_name: $first_name
-          last_name: $last_name
-          date_of_birth: $date_of_birth
-          address: $address
-          telephone_number: $telephone_number
-          passport_number: $passport_number
-          note: $node
-        }
+export const setPrintDate = gql`
+  mutation setPrintDate($id: ID!, $check_in: DateTime) {
+    updatePerson(input: { where: { id: $id }, data: { check_in: $check_in } }) {
+      person {
+        id
       }
-    ) {
+    }
+  }
+`
+
+export const canclePrintDate = gql`
+  mutation canclePrintDate($id: ID!) {
+    updatePerson(input: { where: { id: $id }, data: { check_in: null } }) {
       person {
         id
       }

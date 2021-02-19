@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="grid grid-cols-3 gap-4">
+    <div class="grid grid-cols-3 gap-2">
       <!-- APPOINTMENT_DATE -->
       <div class="col-span-3 md:col-start-2 md:col-span-1">
         <div class="mt-2 relative rounded-md shadow-sm">
@@ -99,26 +99,50 @@
                   {{ item.full_name }}
                 </p>
                 <div class="ml-2 flex-shrink-0 flex">
-                  <button
-                    @click="print(item.id)"
-                    type="button"
-                    class="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-                  >
-                    <!-- Heroicon name: solid/printer -->
-                    <svg
-                      class="-ml-0.5 mr-2 h-4 w-4"
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
+                  <div v-if="!Boolean(item.check_in)">
+                    <button
+                      @click="print(item.id)"
+                      type="button"
+                      class="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                     >
-                      <path
-                        fill-rule="evenodd"
-                        d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z"
-                        clip-rule="evenodd"
-                      />
-                    </svg>
-                    Print
-                  </button>
+                      <!-- Heroicon name: solid/printer -->
+                      <svg
+                        class="-ml-0.5 mr-2 h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Print
+                    </button>
+                  </div>
+                  <div v-else>
+                    <button
+                      @click="canclePrint(item.id)"
+                      type="button"
+                      class="inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                    >
+                      <!-- Heroicon name: solid/printer -->
+                      <svg
+                        class="-ml-0.5 mr-2 h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M5 4v3H4a2 2 0 00-2 2v3a2 2 0 002 2h1v2a2 2 0 002 2h6a2 2 0 002-2v-2h1a2 2 0 002-2V9a2 2 0 00-2-2h-1V4a2 2 0 00-2-2H7a2 2 0 00-2 2zm8 0H7v3h6V4zm0 8H7v4h6v-4z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                      Already
+                    </button>
+                  </div>
                   <button
                     type="button"
                     class="ml-2 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
@@ -230,14 +254,18 @@
         </li>
       </ul>
     </div>
-    <button @click="getJson">getJSON</button>
-    <button @click="create">create</button>
+    <button v-show="false" @click="getJson">getJSON</button>
+    <button v-show="false" @click="create">create</button>
   </div>
 </template>
 
 <script>
 import { personsQuery } from '~/graphql/query'
-import { createPersonMutation } from '~/graphql/mutation'
+import {
+  createPersonMutation,
+  setPrintDate,
+  canclePrintDate,
+} from '~/graphql/mutation'
 import { data } from '~/static/data.js'
 export default {
   data({ $dayjs }) {
@@ -274,9 +302,29 @@ export default {
       return filteredLists
     },
   },
+
   methods: {
-    async print(id) {
-      this.$htmlToPaper('printMe' + id)
+    print(myId) {
+      this.$apollo.mutate({
+        mutation: setPrintDate,
+        variables: {
+          id: myId,
+          check_in: `${this.$dayjs().format(
+            'YYYY-MM-DD'
+          )}T${this.$dayjs().format('HH:mm:ss')}.000Z`,
+        },
+      })
+
+      this.$htmlToPaper('printMe' + myId)
+    },
+
+    canclePrint(myId) {
+      this.$apollo.mutate({
+        mutation: canclePrintDate,
+        variables: {
+          id: myId,
+        },
+      })
     },
     getJson() {
       this.json_data = data
