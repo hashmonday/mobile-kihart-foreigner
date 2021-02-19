@@ -1,12 +1,19 @@
 import gql from 'graphql-tag'
 
-export const personalTemplatesQuery = gql`
-  query personalTemplatesQuery {
-    personalTemplates {
+export const personsQuery = gql`
+  query personsQuery {
+    persons(limit: -1) {
       id
-      template_name
+      created_at
+      updated_at
+      pid
+      full_name
       address
-      telephone_number
+      nationality
+      appointment_date
+      check_in
+      specimen_collected
+      published_at
     }
   }
 `

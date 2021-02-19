@@ -17,6 +17,7 @@
     "core-js": "^3.8.3",
     "graphql-tag": "^2.11.0",
     "nuxt": "^2.14.12",
+    "papaparse": "^5.3.0",
     "vue-html-to-paper": "^1.3.1"
   },
   "devDependencies": {

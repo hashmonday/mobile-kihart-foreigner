@@ -15,7 +15,6 @@ export default {
   data() {
     return {
       personalTemplates: [],
-
       first_name: '',
       last_name: '',
       date_of_birth: '',
@@ -48,7 +47,7 @@ export default {
           },
         })
         .then((res) => console.log(res))
-        .catch((err) => console.log(err.data))
+        .catch((err) => console.log(err))
     },
     update() {
       this.$apollo

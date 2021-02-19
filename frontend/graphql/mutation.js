@@ -5,10 +5,7 @@ export const createPersonMutation = gql`
     $pid: String
     $full_name: String
     $address: String
-    $nationality: String
-    $appointment_date: DateTime
-    $check_in: DateTime
-    $specimen_collected: DateTime
+    $appointment_date: Date
   ) {
     createPerson(
       input: {
@@ -16,10 +13,7 @@ export const createPersonMutation = gql`
           pid: $pid
           full_name: $full_name
           address: $address
-          nationality: $nationality
           appointment_date: $appointment_date
-          check_in: $check_in
-          specimen_collected: $specimen_collected
         }
       }
     ) {
