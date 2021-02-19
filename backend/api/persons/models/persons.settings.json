@@ -1,0 +1,35 @@
+{
+  "kind": "collectionType",
+  "collectionName": "persons",
+  "info": {
+    "name": "Persons"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "pid": {
+      "type": "string"
+    },
+    "full_name": {
+      "type": "string"
+    },
+    "address": {
+      "type": "text"
+    },
+    "nationality": {
+      "type": "string"
+    },
+    "appointment_date": {
+      "type": "datetime"
+    },
+    "check_in": {
+      "type": "datetime"
+    },
+    "specimen_collected": {
+      "type": "datetime"
+    }
+  }
+}

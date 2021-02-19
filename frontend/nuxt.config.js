@@ -2,6 +2,11 @@ export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
 
+  server: {
+    host: process.env.HOST, // default: localhost
+    port: process.env.PORT
+  },
+
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'mobile-kihart-foreigner',
@@ -24,6 +29,7 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
+    '~/plugins/vue-html-to-paper',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -31,13 +37,36 @@ export default {
 
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/dotenv'
   ],
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
+    // https://github.com/nuxt-community/apollo-module
+    '@nuxtjs/apollo',
+    // https://github.com/nuxt-community/dayjs-module
+    '@nuxtjs/dayjs'
   ],
+
+  dayjs: {
+    locales: ['en', 'th'],
+    defaultLocale: 'th',
+    defaultTimeZone: 'Asia/Bangkok',
+    plugins: [
+      'utc', 'timezone', 'RelativeTime', 'BuddhistEra'
+    ]
+  },
+
+  apollo: {
+    clientConfigs: {
+      default: {
+        httpEndpoint: `http://${process.env.HOST}:1337/graphql`,
+      }
+    }
+  },
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {},
