@@ -353,11 +353,13 @@ export default {
       let filteredLists = this.persons
       if (this.search != '') {
         filteredLists = filteredLists.filter((list) => {
-          let a = list.pid.match(this.search)
-          let b = list.full_name.toLowerCase().match(this.search.toLowerCase())
           if (/^\d+$/.test(this.search)) {
+            let a = list.pid.match(this.search)
             return a
           } else {
+            let b = list.full_name
+              .toLowerCase()
+              .match(this.search.toLowerCase())
             return b
           }
         })
