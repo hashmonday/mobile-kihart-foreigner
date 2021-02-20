@@ -1,6 +1,43 @@
 <template>
   <div>
     <div class="grid grid-cols-3 gap-2">
+      <div class="col-span-3 md:col-start-1 md:col-span-1">
+        <div
+          type="button"
+          class="mt-2 ml-2 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-9"
+        >
+          <!-- Heroicon name: solid/users -->
+          <svg
+            class="-ml-0.5 mr-2 h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+            />
+          </svg>
+          Printed {{ filterCheckIn.length }} / {{ persons.length }}
+        </div>
+
+        <div
+          type="button"
+          class="mt-2 ml-2 inline-flex items-center px-3 py-2 border border-transparent shadow-sm text-sm leading-4 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 h-9"
+        >
+          <!-- Heroicon name: solid/users -->
+          <svg
+            class="-ml-0.5 mr-2 h-4 w-4"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"
+            />
+          </svg>
+          Collected {{ filterCollected.length }} / {{ persons.length }}
+        </div>
+      </div>
       <!-- APPOINTMENT_DATE -->
       <div class="col-span-3 md:col-start-2 md:col-span-1">
         <div class="mt-2 relative rounded-md shadow-sm">
@@ -328,7 +365,25 @@ export default {
 
       return filteredLists
     },
+
+    filterCheckIn() {
+      let filteredLists = this.persons
+
+      return filteredLists.filter((list) => Boolean(list.check_in))
+    },
+
+    filterCollected() {
+      let filteredLists = this.persons
+
+      return filteredLists.filter((list) => Boolean(list.specimen_collected))
+    },
   },
+
+  // watch: {
+  //   persons() {
+  //     this.search = 2
+  //   },
+  // },
 
   methods: {
     print(myId) {
